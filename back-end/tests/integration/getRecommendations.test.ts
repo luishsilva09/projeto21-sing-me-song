@@ -4,6 +4,7 @@ import { Recommendation } from "@prisma/client";
 
 import supertest from "supertest";
 import app from "../../src/app";
+import { objectEnumValues } from "@prisma/client/runtime";
 
 describe("test GET /recommendations", () => {
   it("Get last 10 recommendations", async () => {
@@ -28,7 +29,14 @@ describe("test GET /recommendations", () => {
 
     expect(result.body).toMatchObject(createdRecommendation);
   });
-  it("Get random recommendation", async () => {});
+  it("Get random recommendation", async () => {
+    const recommendationData = recommendationDataFactory.recommendationData();
+    await supertest(app).post("/recommendations").send(recommendationData);
+
+    const result = await supertest(app).get("/recommendations/random");
+
+    expect(result.body).toMatchObject<Recommendation>(result.body);
+  });
   it("Get recommendations by amount", async () => {
     const recommendationData = recommendationDataFactory.recommendationData();
     const expectedLength = 1;
