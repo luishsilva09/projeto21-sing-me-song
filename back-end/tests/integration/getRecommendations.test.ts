@@ -4,7 +4,13 @@ import { Recommendation } from "@prisma/client";
 
 import supertest from "supertest";
 import app from "../../src/app";
-import { objectEnumValues } from "@prisma/client/runtime";
+
+beforeEach(async () => {
+  await prisma.$executeRaw`TRUNCATE TABLE recommendations`;
+});
+afterAll(() => {
+  prisma.$disconnect();
+});
 
 describe("test GET /recommendations", () => {
   it("Get last 10 recommendations", async () => {

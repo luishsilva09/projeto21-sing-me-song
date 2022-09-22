@@ -9,6 +9,12 @@ beforeEach(async () => {
 afterAll(() => {
   prisma.$disconnect();
 });
+async function createRecommendation() {
+  const data = recommendationDataFactory.recommendationData();
+  await supertest(app).post("/recommendations").send(data);
+
+  return data;
+}
 
 describe("Test  POST /reomendations", () => {
   it("Create a new recomendation", async () => {
@@ -24,11 +30,8 @@ describe("Test  POST /reomendations", () => {
     expect(result.status).toBe(201);
     expect(createdRecommendation).not.toBe(null);
   });
-
   it("Upvote in recomendation", async () => {
-    const recommendationData = recommendationDataFactory.recommendationData();
-
-    await supertest(app).post("/recommendations").send(recommendationData);
+    const recommendationData = await createRecommendation();
 
     const createdRecommendation = await prisma.recommendation.findUnique({
       where: { name: recommendationData.name },
@@ -41,7 +44,7 @@ describe("Test  POST /reomendations", () => {
     expect(result.status).toBe(200);
   });
   it("Downvote in recomendation", async () => {
-    const recommendationData = recommendationDataFactory.recommendationData();
+    const recommendationData = await createRecommendation();
 
     await supertest(app).post("/recommendations").send(recommendationData);
 
@@ -54,5 +57,19 @@ describe("Test  POST /reomendations", () => {
     );
 
     expect(result.status).toBe(200);
+  });
+  it("Upvote/downvote to not exist recommendation", async () => {
+    const notExistId = 0;
+
+    const upvoteResult = await supertest(app).post(
+      `/recommendations/${notExistId}/upvote`
+    );
+
+    const downvoteResult = await supertest(app).post(
+      `/recommendations/${notExistId}/downvote`
+    );
+
+    expect(upvoteResult.status).toBe(404);
+    expect(downvoteResult.status).toBe(404);
   });
 });
