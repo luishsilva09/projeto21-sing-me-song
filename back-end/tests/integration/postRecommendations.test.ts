@@ -1,4 +1,4 @@
-import * as recommendationDataFactory from "./factories/recommendationFactory";
+import * as recommendationDataFactory from "../factories/recommendationFactory";
 import { prisma } from "../../src/database";
 import supertest from "supertest";
 import app from "../../src/app";
