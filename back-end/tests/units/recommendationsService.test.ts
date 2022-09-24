@@ -68,6 +68,28 @@ describe("Service unit test", () => {
 
     expect(recommendationRepository.updateScore).toBeCalled();
   });
+  it("Downvote with score < -5", async () => {
+    const data = {
+      ...recommendationData(),
+      score: -6,
+    };
+    jest
+      .spyOn(recommendationRepository, "find")
+      .mockImplementationOnce((): any => {
+        return data;
+      });
+    jest
+      .spyOn(recommendationRepository, "updateScore")
+      .mockImplementationOnce((): any => {
+        return data;
+      });
+    jest
+      .spyOn(recommendationRepository, "remove")
+      .mockImplementationOnce((): any => {});
+    await recommendationService.downvote(data.id);
+
+    expect(recommendationRepository.remove).toBeCalled();
+  });
   it("Fail to get recommendation by id for downvote and upvote", async () => {
     const fakeId = 0;
     jest
@@ -87,7 +109,41 @@ describe("Service unit test", () => {
 
     expect(recommendationRepository.findAll).toBeCalled();
   });
-  it.todo("Get top recommendations");
-  it.todo("Get a random recommedation");
-  it.todo("Filter by score");
+  it("Get top recommendations", async () => {
+    const amount = 100;
+    jest
+      .spyOn(recommendationRepository, "getAmountByScore")
+      .mockImplementationOnce((): any => {});
+
+    await recommendationService.getTop(amount);
+
+    expect(recommendationRepository.getAmountByScore).toBeCalled();
+  });
+  it("Get a random recommedation oly one recommendation", async () => {
+    const data = recommendationData();
+
+    jest.spyOn(Math, "random").mockReturnValueOnce(0.7);
+    jest
+      .spyOn(recommendationRepository, "findAll")
+      .mockImplementationOnce((): any => {
+        return [data];
+      });
+    const promise = recommendationService.getRandom();
+
+    expect(promise).toBeInstanceOf(Object);
+  });
+  it("Error not faund on random recommendation", async () => {
+    jest.spyOn(Math, "random").mockReturnValueOnce(0.6);
+
+    jest
+      .spyOn(recommendationRepository, "findAll")
+      .mockImplementation((): any => {
+        return [];
+      });
+    const promise = recommendationService.getRandom();
+
+    expect(promise).rejects.toEqual({ message: "", type: "not_found" });
+  });
+
+  it.todo("Filter score ramdom < 0.7");
 });
