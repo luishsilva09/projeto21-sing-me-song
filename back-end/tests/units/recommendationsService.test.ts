@@ -1,10 +1,13 @@
 import { recommendationRepository } from "../../src/repositories/recommendationRepository";
 import { recommendationService } from "../../src/services/recommendationsService";
-import { recommendationData } from "../factories/recommendationFactory";
+import {
+  newRecommendation,
+  recommendationData,
+} from "../factories/recommendationFactory";
 
 describe("Service unit test", () => {
   it("Insert new recommendation", async () => {
-    const data = recommendationData();
+    const data = newRecommendation();
 
     jest
       .spyOn(recommendationRepository, "findByName")
@@ -19,7 +22,7 @@ describe("Service unit test", () => {
     expect(recommendationRepository.create).toBeCalled();
   });
   it("Insert with error to create a new recommendation", async () => {
-    const data = recommendationData();
+    const data = newRecommendation();
     jest
       .spyOn(recommendationRepository, "findByName")
       .mockImplementationOnce((): any => {
@@ -34,8 +37,37 @@ describe("Service unit test", () => {
       type: "conflict",
     });
   });
-  it.todo("Upvote to a recommendation");
-  it.todo("Downvote to a recommendation");
+  it("Upvote to a recommendation", async () => {
+    const data = recommendationData();
+    jest
+      .spyOn(recommendationRepository, "find")
+      .mockImplementationOnce((): any => {
+        return data;
+      });
+    jest
+      .spyOn(recommendationRepository, "updateScore")
+      .mockImplementationOnce((): any => {});
+
+    await recommendationService.upvote(data.id);
+
+    expect(recommendationRepository.updateScore).toBeCalled();
+  });
+  it("Downvote to a recommendation", async () => {
+    const data = recommendationData();
+    jest
+      .spyOn(recommendationRepository, "find")
+      .mockImplementationOnce((): any => {
+        return data;
+      });
+    jest
+      .spyOn(recommendationRepository, "updateScore")
+      .mockImplementationOnce((): any => {
+        return data;
+      });
+    await recommendationService.downvote(data.id);
+
+    expect(recommendationRepository.updateScore).toBeCalled();
+  });
   it.todo("Get recommendation by id");
   it.todo("Get all recommendations");
   it.todo("Get top recommendations");
