@@ -68,8 +68,25 @@ describe("Service unit test", () => {
 
     expect(recommendationRepository.updateScore).toBeCalled();
   });
-  it.todo("Get recommendation by id");
-  it.todo("Get all recommendations");
+  it("Fail to get recommendation by id for downvote and upvote", async () => {
+    const fakeId = 0;
+    jest
+      .spyOn(recommendationRepository, "find")
+      .mockImplementationOnce((): any => {});
+
+    const promise = recommendationService.upvote(fakeId);
+
+    expect(promise).rejects.toEqual({ message: "", type: "not_found" });
+  });
+  it("Get all recommendations", async () => {
+    jest
+      .spyOn(recommendationRepository, "findAll")
+      .mockImplementationOnce((): any => {});
+
+    await recommendationService.get();
+
+    expect(recommendationRepository.findAll).toBeCalled();
+  });
   it.todo("Get top recommendations");
   it.todo("Get a random recommedation");
   it.todo("Filter by score");
