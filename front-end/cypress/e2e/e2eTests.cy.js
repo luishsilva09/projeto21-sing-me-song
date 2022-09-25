@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import dotenv from "dotenv";
 dotenv.config();
-const API_URL = process.env.API_URL;
-console.log(API_URL);
+
+Cypress.env(process.env.API_URL);
 
 beforeEach(async () => {
   await cy.resetDatabase();
@@ -26,10 +26,54 @@ describe("POST recommendations", () => {
 
     cy.get('[ data-cy="submit"]').click();
 
-    cy.wait("@send");
+    cy.wait("@send").then(({ request, response }) => {
+      expect(response.statusCode).equal(201);
+    });
   });
-  it("Upvote to a recommendation", () => {
-    cy.visit("http://localhost:3000");
+  // it("Upvote to a recommendation", () => {
+  //   cy.visit("http://localhost:3000");
+  //   cy.seedDatabase();
+
+  //   cy.get('[data-cy="upvote"]').click();
+  // });
+  // it("Upvote to a recommendation", () => {
+  //   cy.visit("http://localhost:3000");
+  //   cy.seedDatabase();
+
+  //   cy.get('[data-cy="downvote"]').click();
+  // });
+
+  it("Get top recommendations", () => {
+    cy.visit("http://localhost:3000/top");
     cy.seedDatabase();
+
+    cy.intercept("GET", `http://localhost:4000/recommendations/top/10`).as(
+      "promise"
+    );
+
+    cy.wait("@promise").then(({ request, response }) => {
+      expect(response.body).to.not.equal(null);
+    });
+  });
+  it("Nvigate top", () => {
+    cy.visit("http://localhost:3000");
+
+    cy.get('[ data-cy="top"]').click();
+
+    cy.url().should("equal", `http://localhost:3000/top`);
+  });
+  it("Nvigate home", () => {
+    cy.visit("http://localhost:3000/top");
+
+    cy.get('[ data-cy="home"]').click();
+
+    cy.url().should("equal", `http://localhost:3000/`);
+  });
+  it("Nvigate random", () => {
+    cy.visit("http://localhost:3000/");
+
+    cy.get('[ data-cy="random"]').click();
+
+    cy.url().should("equal", `http://localhost:3000/random`);
   });
 });
