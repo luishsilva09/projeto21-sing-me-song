@@ -144,6 +144,4 @@ describe("Service unit test", () => {
 
     expect(promise).rejects.toEqual({ message: "", type: "not_found" });
   });
-
-  it.todo("Filter score ramdom < 0.7");
 });

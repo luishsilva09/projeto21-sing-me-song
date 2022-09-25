@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 async function createRecommendation() {
-  const data = recommendationDataFactory.recommendationData();
+  const data = recommendationDataFactory.newRecommendation();
   await supertest(app).post("/recommendations").send(data);
 
   return data;

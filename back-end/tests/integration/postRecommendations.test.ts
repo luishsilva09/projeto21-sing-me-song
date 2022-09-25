@@ -10,7 +10,7 @@ afterAll(() => {
   prisma.$disconnect();
 });
 async function createRecommendation() {
-  const data = recommendationDataFactory.recommendationData();
+  const data = recommendationDataFactory.newRecommendation();
   await supertest(app).post("/recommendations").send(data);
 
   return data;
@@ -18,7 +18,7 @@ async function createRecommendation() {
 
 describe("Test  POST /reomendations", () => {
   it("Create a new recomendation", async () => {
-    const recommendationData = recommendationDataFactory.recommendationData();
+    const recommendationData = recommendationDataFactory.newRecommendation();
 
     const result = await supertest(app)
       .post("/recommendations")

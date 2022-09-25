@@ -9,7 +9,8 @@
     "dev": "nodemon ./src/server.ts",
     "start": "node dist/src/server.js",
     "build": "tsc && npx prisma migrate deploy",
-    "test:unit": "dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/unit"
+    "test:unit": "dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/unit",
+    "test:integration": "dotenv -e .emv.test jest -- -i --testPathPattern=tests/integration"
   },
   "keywords": [],
   "author": "",
