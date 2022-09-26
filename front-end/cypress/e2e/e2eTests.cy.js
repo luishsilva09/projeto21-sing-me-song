@@ -2,27 +2,28 @@ import { faker } from "@faker-js/faker";
 import dotenv from "dotenv";
 dotenv.config();
 
-Cypress.env(process.env.API_URL);
+const API_URL = Cypress.env("API_URL");
+const FRONT_URL = Cypress.env("FRONT_URL");
 
 beforeEach(async () => {
   await cy.resetDatabase();
 });
 
 Cypress.Commands.add("seedDatabase", () => {
-  cy.request("POST", `http://localhost:4000/seed/recommendations`);
+  cy.request("POST", `${API_URL}/seed/recommendations`);
 });
 Cypress.Commands.add("resetDatabase", () => {
-  cy.request("POST", `http://localhost:4000/reset-database`);
+  cy.request("POST", `${API_URL}/reset-database`);
 });
 describe("POST recommendations", () => {
   it("Create new recommendation", () => {
     const youtubeLink =
       "https://www.youtube.com/watch?v=uc0AD9zUSW8&ab_channel=TONY%27SRELAXATION%28LoFi%26CHILL%29";
-    cy.visit("http://localhost:3000");
+    cy.visit(`${FRONT_URL}/`);
     cy.get('[data-cy="name"]').type(faker.lorem.word(2));
     cy.get('[ data-cy="youtubeLink"]').type(youtubeLink);
 
-    cy.intercept("POST", "http://localhost:4000/recommendations").as("send");
+    cy.intercept("POST", `${API_URL}/recommendations`).as("send");
 
     cy.get('[ data-cy="submit"]').click();
 
@@ -31,49 +32,47 @@ describe("POST recommendations", () => {
     });
   });
   // it("Upvote to a recommendation", () => {
-  //   cy.visit("http://localhost:3000");
+  //   cy.visit(`${FRONT_URL}`);
   //   cy.seedDatabase();
 
   //   cy.get('[data-cy="upvote"]').click();
   // });
   // it("Upvote to a recommendation", () => {
-  //   cy.visit("http://localhost:3000");
+  //   cy.visit(`${FRONT_URL}`);
   //   cy.seedDatabase();
 
   //   cy.get('[data-cy="downvote"]').click();
   // });
 
   it("Get top recommendations", () => {
-    cy.visit("http://localhost:3000/top");
+    cy.visit(`${FRONT_URL}/top`);
     cy.seedDatabase();
 
-    cy.intercept("GET", `http://localhost:4000/recommendations/top/10`).as(
-      "promise"
-    );
+    cy.intercept("GET", `${API_URL}/recommendations/top/10`).as("promise");
 
     cy.wait("@promise").then(({ request, response }) => {
       expect(response.body).to.not.equal(null);
     });
   });
   it("Nvigate top", () => {
-    cy.visit("http://localhost:3000");
+    cy.visit(`${FRONT_URL}/`);
 
     cy.get('[ data-cy="top"]').click();
 
-    cy.url().should("equal", `http://localhost:3000/top`);
+    cy.url().should("equal", `${FRONT_URL}/top`);
   });
   it("Nvigate home", () => {
-    cy.visit("http://localhost:3000/top");
+    cy.visit(`${FRONT_URL}/top`);
 
     cy.get('[ data-cy="home"]').click();
 
-    cy.url().should("equal", `http://localhost:3000/`);
+    cy.url().should("equal", `${FRONT_URL}/`);
   });
   it("Nvigate random", () => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(`${FRONT_URL}/`);
 
     cy.get('[ data-cy="random"]').click();
 
-    cy.url().should("equal", `http://localhost:3000/random`);
+    cy.url().should("equal", `${FRONT_URL}/random`);
   });
 });
