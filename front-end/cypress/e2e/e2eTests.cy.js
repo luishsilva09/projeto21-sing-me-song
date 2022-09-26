@@ -1,6 +1,4 @@
 import { faker } from "@faker-js/faker";
-import dotenv from "dotenv";
-dotenv.config();
 
 const API_URL = Cypress.env("API_URL");
 const FRONT_URL = Cypress.env("FRONT_URL");

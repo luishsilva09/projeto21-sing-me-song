@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+<p align="center"> 
+    <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/225/studio-microphone_1f399.png">
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">Sing me a Song</h1>
 
-## Available Scripts
+# Description
 
-In the project directory, you can run:
+Sing a Song is aplication for anonymous song recommendation. The more people like a recommendation, the more likely it is to be recommended to other.
 
-### `npm start`
+# Tests
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+To run this test, you will need to add the following environment variables to your cypress.config env file
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`API_URL= url from your api`
 
-### `npm test`
+`FRONT_URL= url where the front run`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To run all test:
 
-### `npm run build`
+```bash
+    npx cypress open
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Run Locally
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone the project:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
 
-### `npm run eject`
+  git clone https://github.com/luishsilva09/projeto21-sing-me-song.git
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  npm install
 
-## Learn More
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To run:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+    npm start
+```
 
-### Code Splitting
+# Environment Variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+To run this project in local, you will need to add the following environment variables to your .env file
 
-### Analyzing the Bundle Size
+`REACT_APP_API_BASE_URL= url from your API`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+On cypress.config env you have this variables to use in your test
 
-### Making a Progressive Web App
+`API_URL= url from your api`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+`FRONT_URL= url where the front run`
 
-### Advanced Configuration
+# Authors
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+​
 
-### Deployment
+- Luís Henrique da Silva
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+​
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+https://github.com/luishsilva09
