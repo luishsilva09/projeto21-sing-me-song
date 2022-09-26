@@ -206,7 +206,7 @@ Clone the project:
 
 ```bash
 
-  git clone https://github.com/luishsilva09/
+  git clone https://github.com/luishsilva09/projeto21-sing-me-song.git
 
 ```
 
@@ -229,7 +229,8 @@ Configuration and create database:
 To run:
 
 ```bash
-npm start
+    npm build
+    npm start
 ```
 
 # Environment Variables
