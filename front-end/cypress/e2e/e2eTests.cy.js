@@ -31,18 +31,30 @@ describe("POST recommendations", () => {
       expect(response.statusCode).equal(201);
     });
   });
-  // it("Upvote to a recommendation", () => {
-  //   cy.visit(`${FRONT_URL}`);
-  //   cy.seedDatabase();
+  it("Upvote to a recommendation", () => {
+    cy.visit(`${FRONT_URL}`);
+    cy.seedDatabase();
 
-  //   cy.get('[data-cy="upvote"]').click();
-  // });
-  // it("Upvote to a recommendation", () => {
-  //   cy.visit(`${FRONT_URL}`);
-  //   cy.seedDatabase();
+    cy.get('[data-cy="upvote"]').click();
 
-  //   cy.get('[data-cy="downvote"]').click();
-  // });
+    cy.get('[data-cy="scoreValue"]')
+      .invoke("text")
+      .then(($value) => {
+        expect($value).equal("1");
+      });
+  });
+  it("Downvote to a recommendation", () => {
+    cy.visit(`${FRONT_URL}`);
+    cy.seedDatabase();
+
+    cy.get('[data-cy="downvote"]').click();
+
+    cy.get('[data-cy="scoreValue"]')
+      .invoke("text")
+      .then(($value) => {
+        expect($value).equal("-1");
+      });
+  });
 
   it("Get top recommendations", () => {
     cy.visit(`${FRONT_URL}/top`);
@@ -54,21 +66,22 @@ describe("POST recommendations", () => {
       expect(response.body).to.not.equal(null);
     });
   });
-  it("Nvigate top", () => {
+
+  it("Navigate to top", () => {
     cy.visit(`${FRONT_URL}/`);
 
     cy.get('[ data-cy="top"]').click();
 
     cy.url().should("equal", `${FRONT_URL}/top`);
   });
-  it("Nvigate home", () => {
+  it("Navigate to home", () => {
     cy.visit(`${FRONT_URL}/top`);
 
     cy.get('[ data-cy="home"]').click();
 
     cy.url().should("equal", `${FRONT_URL}/`);
   });
-  it("Nvigate random", () => {
+  it("Navigate to random", () => {
     cy.visit(`${FRONT_URL}/`);
 
     cy.get('[ data-cy="random"]').click();
